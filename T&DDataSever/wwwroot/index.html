@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #0A5F44;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; 
+  width: 0;
+  background-color: #CBEA00;
+  box-sizing: border-box;
+}
+</style>
+<title data-i18n="APP_NAME">Data Server</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="cache-control" content="no-cache">
+<link rel="apple-touch-icon-precomposed" href="images/favicon.png"/>
+<link rel="icon" href="images/favicon.png" type="image/png"/>
+<link href="images/favicon.ico" rel="shortcut icon" />
+<link href="images/favicon.ico" rel="icon" />
+<link rel="stylesheet" href="lib/jqmobile/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" href="lib/nativedroid2/css/nativedroid2.css" />
+<link rel="stylesheet" href="lib/nativedroid2/css/nativedroid2.color.teal.css" />
+<link rel="stylesheet" href="lib/waves/waves.min.css" />
+<link rel="stylesheet" href="lib/wow/animate.css" />
+<link rel="stylesheet" href="lib/morrisjs/morris.css" />
+<link rel="stylesheet" href="lib/swiper/css/swiper.min.css" />
+<link rel="stylesheet" href="js/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/dataserver.min.css?v=1548150951679">
+<link rel="stylesheet" href="lib/bootstrap-toggle-master/css/bootstrap-toggle.min.css" />
+
+<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="lib/jqmobile/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="lib/jquery.i18n.properties-min-1.0.9.js"></script>
+<script type="text/javascript" src="lib/waves/waves.min.js"></script>
+<script type="text/javascript" src="lib/wow/wow.min.js"></script>
+<script type="text/javascript" src="lib/nativedroid2/nativedroid2.js"></script>
+<script type="text/javascript" src="lib/jquery.i18n.properties-min-1.0.9.js"></script>
+<script type="text/javascript" src="lib/morrisjs/raphael-min.js"></script>
+<script type="text/javascript" src="lib/morrisjs/morris.min.js"></script>
+<script type="text/javascript" src="lib/swiper/swiper.jquery.min.js"></script>
+<script src="js/dataserver.min.js?v=1548150951679"></script>
+<script type="text/javascript" src="lib/bootstrap-toggle-master/js/bootstrap-toggle.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="lib/datap1.json"></script>
+<script type="text/javascript" src="lib/Humi5218427A.json"></script>
+<script type="text/javascript" src="lib/Temp5218427A.json"></script>
+<script type="text/javascript" src="lib/Humi52364E1A.json"></script>
+<script type="text/javascript" src="lib/Temp52364E1A.json"></script>
+<script type="text/javascript" src="lib/Humi52364E1B.json"></script>
+<script type="text/javascript" src="lib/Temp52364E1B.json"></script>
+<script type="text/javascript" src="lib/Humi52364E1C.json"></script>
+<script type="text/javascript" src="lib/Temp52364E1C.json"></script>
+
+<script src="js/gauge.min.js"></script>
+
+</style>
+</head>
+
+<script>
+
+//$(function(){
+	/*
+    var swiper = new Swiper ('.swiper-container', {
+        slidesPerView: 3,
+        //freeMode: true,
+        spaceBetween: 10,
+        centeredSlides: true,
+        //slidesOffsetBefore: 25,
+        //slidesOffsetAfter: 25,
+        initialSlide: 2,
+        breakpoints: {
+          320: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          480: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          }
+        }
+        //freeModeSticky: true
+        //loop: true
+    });
+    */
+    
+
+//});
+
+//modify by dat
+
+var gauges = document.getElementsByTagName('canvas');
+//var chvalues = $("ch_value_small").text();
+let socket = new WebSocket("ws://192.168.1.12:1337");
+function myFunction() {
+console.log("a");
+  var checkBox1 = document.getElementById("outside");
+  var checkBox2 = document.getElementById("indoor");
+  var text = document.getElementById("text");
+  if (checkBox1.checked == true){
+    socket.send("bOn1");
+	console.log("a");
+  } else {
+     socket.send("bOff1");
+	 console.log("b");
+  }
+  if (checkBox2.checked == true){
+    socket.send("bOn2");
+  } else {
+     socket.send("bOff2");
+  }
+}
+
+setInterval(function(){ 
+//var x = document.getElementsByClassName("ch_value_small");
+	//gauges[0].setAttribute('data-value', x[5].innerHTML  );
+    //gauges[0].setAttribute('data-units', x[5].innerHTML.substring(0,2) + " %");
+	//gauges[1].setAttribute('data-value', x[4].innerHTML  );
+    //gauges[1].setAttribute('data-units', x[4].innerHTML + " °C");
+	//gauges[2].setAttribute('data-value', x[3].innerHTML  );
+    //gauges[2].setAttribute('data-units', x[3].innerHTML.substring(0,2) + " %");
+	//gauges[3].setAttribute('data-value', x[2].innerHTML  );
+    //gauges[3].setAttribute('data-units', x[2].innerHTML + " °C");
+	//gauges[4].setAttribute('data-value', x[7].innerHTML  );
+    //gauges[4].setAttribute('data-units', x[7].innerHTML.substring(0,2) + " %");
+	//gauges[5].setAttribute('data-value', x[6].innerHTML  );
+    //gauges[5].setAttribute('data-units', x[6].innerHTML + " °C");
+	//gauges[6].setAttribute('data-value', x[1].innerHTML  );
+    //gauges[6].setAttribute('data-units', x[1].innerHTML.substring(0,2) + " %");
+	//gauges[7].setAttribute('data-value', x[0].innerHTML  );
+    //gauges[7].setAttribute('data-units', x[0].innerHTML + " °C");
+var tm =  document.getElementsByClassName("logger_date");
+var x = document.getElementsByClassName("ch_value_small");
+
+var s5218427A = {id: "5218427A" , time: ""+tm[0].innerHTML+"" , location:"Outside" , temp:""+x[0].innerHTML+"" , humi:""+x[1].innerHTML+"" };
+var s52364E1C = {id: "52364E1C" , time: ""+tm[1].innerHTML+"" , location:"KhoChongAm" , temp:""+x[2].innerHTML+"" , humi:""+x[3].innerHTML+"" };
+var s52364E1B = {id: "52364E1B" , time: ""+tm[2].innerHTML+"" , location:"Kho Linh Kien" , temp:""+x[4].innerHTML+"" , humi:""+x[5].innerHTML+"" };
+var s52364E1A = {id: "52364E1A" , time: ""+tm[3].innerHTML+"" , location:"Xuong San xuat" , temp:""+x[6].innerHTML+"" , humi:""+x[7].innerHTML+"" };
+
+//console.log(s5218427A);
+	gauges[0].setAttribute('data-value', s52364E1B.humi  );
+    gauges[0].setAttribute('data-units', s52364E1B.humi + " %");
+	gauges[1].setAttribute('data-value', s52364E1B.temp  );
+    gauges[1].setAttribute('data-units', s52364E1B.temp + " °C");
+	gauges[2].setAttribute('data-value', s52364E1C.humi  );
+    gauges[2].setAttribute('data-units', s52364E1C.humi + " %");
+	gauges[3].setAttribute('data-value', s52364E1C.temp  );
+    gauges[3].setAttribute('data-units', s52364E1C.temp + " °C");
+	gauges[4].setAttribute('data-value', s52364E1A.humi  );
+    gauges[4].setAttribute('data-units', s52364E1A.humi + " %");
+	gauges[5].setAttribute('data-value', s52364E1A.temp  );
+    gauges[5].setAttribute('data-units', s52364E1A.temp + " °C");
+	gauges[6].setAttribute('data-value', s5218427A.humi  );
+    gauges[6].setAttribute('data-units', s5218427A.humi + " %");
+	gauges[7].setAttribute('data-value', s5218427A.temp  );
+    gauges[7].setAttribute('data-units', s5218427A.temp + " °C");
+    //console.log(socket.readyState);
+	//console.log(WebSocket.OPEN);
+	if (socket.readyState === WebSocket.OPEN) {
+			var json = JSON.stringify([s5218427A,s52364E1C,s52364E1B,s52364E1A]);
+			socket.send(json);
+		}else{
+			socket = new WebSocket("ws://192.168.1.12:1337");
+			var json = JSON.stringify([s5218427A,s52364E1C,s52364E1B,s52364E1A]);
+			socket.send(json);
+		}
+	//console.log(obj.Sensor[0].temp);
+
+	////5218427A [01] - Ngoai Troi
+	////52364E1C [23] - KhoChongAm
+	////52364E1B [45] - Kho Linh Kien
+	////52364E1A [67] - Xuong San xuat
+ }, 10000);
+
+
+// send message from the form
+
+</script>
+<body>
+	
+	<!-- JavaScript無効時表示用メッセージ -->
+	<div id="javascript_error_message" style="z-index: 9999; position: absolute; top: 0px; left: 0px; background-color: #cfdfff; -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);">
+		<div style="margin-left: 20px;">
+			<p>
+				本アプリケーションを利用するには、JavaScriptを有効にする必要があります。<br>
+				このブラウザでは、JavaScriptが無効になっているか、サポートされていないようです。<br>
+				JavaScriptを有効にし、<a href="">もう一度お試しください。</a>
+			</p>
+		</div>
+		<div style="margin-left: 20px;">
+			<p>
+				<font face=arial>JavaScript must be enabled in order for you to use this application. However, it seems JavaScript is either disabled or not supported by your browser. Enable JavaScript by changing your browser options, then <a href="">try again</a>. </font>
+			</p>
+		</div>
+	</div>
+	
+
+	<!-- JavaScript無効時表示用メッセージ -->
+
+	<!-- **********************トップ画面********************** -->
+	<div data-role="page" id="page_top">
+
+		<!--nd2-include data-src="menu.html"></nd2-include-->
+		<!-- panel left DAT1 --> 
+		<div data-role="panel" id="sidemenu" data-display="overlay" data-position-fixed="true"  >
+
+		    <div class='sidepanel-menu wow fadeInDown'>
+                <a href="#" class="ui-btn-right ui-btn" data-role="button" data-rel="close" role="button"><i class="zmdi zmdi-close float-icon"></i></a>
+
+		        <div class="row">
+		            <span id="applivation_with_version">Data Server</span>
+		        </div>
+                <div class="row">
+                    <span class="hostname" id="hostname"></span>
+                </div>
+		    </div>
+
+		    <ul data-role="listview" data-inset="false">
+		        <li data-role="list-divider">
+		            <span data-i18n="MENU_HOME">HOME</span>
+		        </li>
+		    </ul>
+		    <ul data-role="listview" data-icon="false"> 
+		        <li><a href="#page_top" data-rel="close" data-transition="slide"><img src="images/icon/monitoring.png" class="ui-li-icon"><span data-i18n="MENU_MONITORING">モニタリング</span></a></li> 
+		    </ul>
+
+		    <ul data-role="listview" data-inset="false">
+		        <li data-role="list-divider"><span data-i18n="MENU_SETTINGS">設定</span></li>
+		    </ul>
+		    <ul data-role="listview" data-icon="false"> 
+		        <li><a href="#page_set_display" data-transition="slide"><img src="images/icon/display_settings.png" class="ui-li-icon"><span data-i18n="MENU_DISPLAY_SETTINGS">表示設定</span></a></li> 
+		        <li><a href="#page_set_lang" data-transition="slide"><img src="images/icon/language_settings.png" class="ui-li-icon"><span data-i18n="MENU_LANG_SETTINGS">言語設定</span></a></li> 
+		    </ul>
+
+		    <hr class="inset">
+
+
+		</div>
+		<!-- /panel left -->
+
+
+		<div data-role="header" data-position="inline" data-backbtn="false" class="wow fadeInDown" data-wow-delay="0.2s" > 	<!-- HIDEN style="display: none;"-->
+
+			<!-- Progress -->
+			<div class="loadie" style="display: block; width: 100%; height: 10px;" ></div>
+			<!-- Progress-->
+
+			<a href="#sidemenu" data-iconpos="notext" class="ui-btn ui-btn-left btn-circle wow fadeIn" data-wow-delay='1.2s' id="settings" style="display: none;  ><i class="zmdi zmdi-menu"></i></a>
+			<h1 data-i18n="APP_NAME" id="app-title" class="wow fadeIn" data-wow-delay='0.4s' style="display: none; ></h1>
+			<a href="#" data-iconpos="notext" class="ui-btn ui-btn-right btn-circle" id="updateCurrent" ><i class="zmdi zmdi-refresh float-icon"  ></i></a>
+
+
+			<!--  親機スワイプエリア -->
+			<div class="swiper-container">
+				<div class="swiper-wrapper" id="category"></div>
+			</div>
+
+<!--
+<div class="swiper-container">
+  <div class="swiper-wrapper" id="category">
+      <div class="swiper-slide">
+         <div class="baseunits_menu baseunits_menu_active">RTR-500MBS_5EA20008</div>
+      </div>
+      <div class="swiper-slide">
+         <div class="baseunits_menu">SHIMA-U-CHI</div>
+      </div>
+      <div class="swiper-slide"">
+         <div class="baseunits_menu">太陽光運用_RTR-500MBS</div>
+      </div>
+  </div>
+</div>
+-->
+		</div>
+		<!-- /header -->
+		<!-- gauge  -->
+
+  <div class="container-fluid">
+  	<div class="row">
+  		<div class="col-sm-6" style="background-color:#FFF;border: 2px solid white;">
+  			<p style="text-align:center;font-size:250%">部品庫 Kho linh kiện </p>
+
+  			<span align="left;overflow-x: scroll;">
+  			<canvas id="SENSOR01-Humidity"
+				 data-type="radial-gauge"
+  				 data-width="400"
+				 data-height="400"
+				 data-units="40 %"
+				 data-font-numbers-size="35"
+				 data-value="40"
+				 data-min-value="30"
+				 data-start-angle="110"
+				 data-ticks-angle="140"
+				 data-value-box="false"
+				 data-max-value="80"
+				 data-exact-ticks="true"
+				 data-major-ticks="30,35,75,80"
+				 data-minor-ticks="2"
+				 data-stroke-ticks="true"
+				 data-highlights='[
+					{"from": 30, "to": 35, "color": "rgba(200, 50, 50, .75)"},
+					{"from": 35, "to": 75, "color": "rgba(0, 230, 64, 1)"},
+				 	{"from": 75, "to": 80, "color": "rgba(200, 50, 50, .75)"}
+					
+					
+				 ]'
+				 data-color-plate="#fff"
+				 data-border-shadow-width="0"
+				 data-borders="false"
+				 data-needle-type="arrow"
+				 data-needle-width="4"
+				 data-needle-circle-size="7"
+				 data-needle-circle-outer="true"
+				 data-needle-circle-inner="false"
+				 data-animation-duration="800"
+				 data-animation-rule="linear"
+				 data-font-units-size="65"
+				 data-color-units="#000"
+				 data-color-needle="rgba(248, 129, 230, 0.91)"
+				 data-color-needle-end="rgba(199, 10, 183, 0.91)"
+			     data-color-needle="rgba(199, 10, 183, 0.91)"
+				 
+			></canvas>
+  				</span>
+  				<span align="right">
+  				<canvas id="SENSOR01-Temperature"
+				 data-type="radial-gauge"
+				    data-width="400"
+			    	data-height="400"
+			    	data-units="20"
+			    	data-value="20"
+			    	data-min-value="10"
+					data-start-angle="110"
+					data-ticks-angle="140"
+			    	data-value-box="false"
+			    	data-max-value="40"
+					data-exact-ticks="true"
+			    	data-major-ticks="10,18,35,40"
+			    	data-minor-ticks="2"
+			    	data-stroke-ticks="true"
+					data-font-numbers-size="35"
+			    	data-highlights='[
+			    		{"from": 10, "to": 18, "color": "rgba(200, 50, 50, .75)"},
+						{"from": 18, "to": 35, "color": "rgba(0, 230, 64, 1)"},
+						{"from": 35, "to": 40, "color": "rgba(200, 50, 50, .75)"}
+			    	]'
+			    	data-color-plate="#fff"
+			    	data-border-shadow-width="0"
+			    	data-borders="false"
+			    	data-needle-type="arrow"
+			    	data-needle-width="4"
+			    	data-needle-circle-size="7"
+			    	data-needle-circle-outer="true"
+			    	data-needle-circle-inner="false"
+			    	data-animation-duration="800"
+			    	data-animation-rule="linear"
+					data-font-units-size="65"
+					data-color-units="#000"
+					data-color-needle="rgba(248, 129, 230, 0.91)"
+					data-color-needle-end="rgba(199, 10, 183, 0.91)"
+			     data-color-needle="rgba(199, 10, 183, 0.91)"
+			    ></canvas>
+  				</span>
+  		</div>
+  		<div class="col-sm-6" style="background-color:#FFFF;border: 2px solid white">
+  			<p style="text-align:center;font-size:250%">防湿庫 Kho chống ẩm</p>
+  			<span align="left;overflow-x: scroll;">
+          <canvas id="SENSOR02-Humidity"
+            data-type="radial-gauge"
+  				 data-width="400"
+				 data-height="400"
+				 data-units="40 %"
+				 data-font-numbers-size="35"
+				 data-value="40"
+				 data-min-value="30"
+				 data-start-angle="110"
+				 data-ticks-angle="140"
+				 data-value-box="false"
+				 data-max-value="80"
+				 data-exact-ticks="true"
+				 data-major-ticks="30,35,75,80"
+				 data-minor-ticks="2"
+				 data-stroke-ticks="true"
+				 data-highlights='[
+					{"from": 30, "to": 35, "color": "rgba(200, 50, 50, .75)"},
+					{"from": 35, "to": 75, "color": "rgba(0, 230, 64, 1)"},
+				 	{"from": 75, "to": 80, "color": "rgba(200, 50, 50, .75)"}
+					
+					
+				 ]'
+				 data-color-plate="#fff"
+				 data-border-shadow-width="0"
+				 data-borders="false"
+				 data-needle-type="arrow"
+				 data-needle-width="4"
+				 data-needle-circle-size="7"
+				 data-needle-circle-outer="true"
+				 data-needle-circle-inner="false"
+				 data-animation-duration="800"
+				 data-animation-rule="linear"
+				 data-font-units-size="65"
+				 data-color-units="#000"
+				 data-color-needle="rgba(248, 129, 230, 0.91)"
+				 data-color-needle-end="rgba(199, 10, 183, 0.91)"
+			     data-color-needle="rgba(199, 10, 183, 0.91)"
+        ></canvas>
+            </span>
+            <span align="right">
+            <canvas id="SENSOR02-Temperature"
+					data-type="radial-gauge"
+				    data-width="400"
+			    	data-height="400"
+			    	data-units="20°C"
+			    	data-value="20"
+			    	data-min-value="10"
+					data-start-angle="110"
+					data-ticks-angle="140"
+			    	data-value-box="false"
+			    	data-max-value="40"
+					data-exact-ticks="true"
+			    	data-major-ticks="10,18,35,40"
+			    	data-minor-ticks="2"
+			    	data-stroke-ticks="true"
+			    	data-highlights='[
+			    		{"from": 10, "to": 18, "color": "rgba(200, 50, 50, .75)"},
+						{"from": 18, "to": 35, "color": "rgba(0, 230, 64, 1)"},
+						{"from": 35, "to": 40, "color": "rgba(200, 50, 50, .75)"}
+			    	]'
+			    	data-color-plate="#fff"
+			    	data-border-shadow-width="0"
+			    	data-borders="false"
+			    	data-needle-type="arrow"
+			    	data-needle-width="4"
+			    	data-needle-circle-size="7"
+			    	data-needle-circle-outer="true"
+			    	data-needle-circle-inner="false"
+			    	data-animation-duration="800"
+			    	data-animation-rule="linear"
+					data-font-units-size="65"
+					data-font-numbers-size="35"
+					data-color-units="#000"
+					data-color-needle="rgba(248, 129, 230, 0.91)"
+					data-color-needle-end="rgba(199, 10, 183, 0.91)"
+					data-color-needle="rgba(199, 10, 183, 0.91)"
+            ></canvas>
+  				</span>
+  		</div>
+  		<div class="w-10"></div>
+  		<div class="col-sm-6" style="background-color:#FFFF;border: 2px solid white" >
+  			<p style="text-align:center;font-size:250%">加工エリア Xưởng sản xuất</p>
+  			<span align="left;overflow-x: scroll;">
+          <canvas id="SENSOR03-Humidity"
+				 data-type="radial-gauge"
+  				 data-width="400"
+				 data-height="400"
+				 data-units="40 %"
+				 data-font-numbers-size="35"
+				 data-value="40"
+				 data-min-value="30"
+				 data-start-angle="110"
+				 data-ticks-angle="140"
+				 data-value-box="false"
+				 data-max-value="80"
+				 data-exact-ticks="true"
+				 data-major-ticks="30,35,75,80"
+				 data-minor-ticks="2"
+				 data-stroke-ticks="true"
+				 
+				 data-highlights='[
+					{"from": 30, "to": 35, "color": "rgba(200, 50, 50, .75)"},
+					{"from": 35, "to": 75, "color": "rgba(0, 230, 64, 1)"},
+				 	{"from": 75, "to": 80, "color": "rgba(200, 50, 50, .75)"}
+					
+					
+				 ]'
+				 data-color-plate="#fff"
+				 data-border-shadow-width="0"
+				 data-borders="false"
+				 data-needle-type="arrow"
+				 data-needle-width="4"
+				 data-needle-circle-size="7"
+				 data-needle-circle-outer="true"
+				 data-needle-circle-inner="false"
+				 data-animation-duration="800"
+				 data-animation-rule="linear"
+				 data-font-units-size="65"
+				 data-color-units="#000"
+				 data-color-needle="rgba(248, 129, 230, 0.91)"
+				 data-color-needle-end="rgba(199, 10, 183, 0.91)"
+			     data-color-needle="rgba(199, 10, 183, 0.91)"
+        ></canvas>
+            </span>
+            <span align="right">
+            <canvas id="SENSOR03-Temperature"
+          data-type="radial-gauge"
+				    data-width="400"
+			    	data-height="400"
+			    	data-units="20 °C"
+			    	data-value="20"
+			    	data-min-value="10"
+					data-font-numbers-size="35"
+					data-start-angle="110"
+					data-ticks-angle="140"
+			    	data-value-box="false"
+			    	data-max-value="40"
+					data-exact-ticks="true"
+			    	data-major-ticks="10,18,35,40"
+			    	data-minor-ticks="2"
+			    	data-stroke-ticks="true"
+			    	data-highlights='[
+			    		{"from": 10, "to": 18, "color": "rgba(200, 50, 50, .75)"},
+						{"from": 18, "to": 35, "color": "rgba(0, 230, 64, 1)"},
+						{"from": 35, "to": 40, "color": "rgba(200, 50, 50, .75)"}
+			    	]'
+			    	data-color-plate="#fff"
+			    	data-border-shadow-width="0"
+			    	data-borders="false"
+			    	data-needle-type="arrow"
+			    	data-needle-width="4"
+			    	data-needle-circle-size="7"
+			    	data-needle-circle-outer="true"
+			    	data-needle-circle-inner="false"
+			    	data-animation-duration="800"
+			    	data-animation-rule="linear"
+					data-font-units-size="65"
+					data-color-units="#000"
+					data-color-needle="rgba(248, 129, 230, 0.91)"
+					data-color-needle-end="rgba(199, 10, 183, 0.91)"
+					data-color-needle="rgba(199, 10, 183, 0.91)"
+            ></canvas>
+  				</span>
+  			</div>
+  		<div class="col-sm-6" style="background-color:#FFFF;border: 2px solid white">
+  			<p style="text-align:center;font-size:250%">外気 Ngoài trời</p>
+  			<span align="left;overflow-x: scroll;">
+          <canvas id="SENSOR04-Humidity"
+				 data-type="radial-gauge"
+  				 data-width="400"
+				 data-height="400"
+				 data-units="40 %"
+				 data-font-numbers-size="35"
+				 data-exact-ticks="true"	
+				 data-value="40"
+				 data-min-value="30"
+				 data-start-angle="110"
+				 data-ticks-angle="140"
+				 data-value-box="false"
+				 data-max-value="80"
+				 data-major-ticks="30,45,60,70,80"
+				 data-minor-ticks="2"
+				 data-stroke-ticks="true"
+				 data-highlights='[
+					
+					{"from": 30, "to": 80, "color": "rgba(89, 149, 232, 1)"}
+					
+				]'
+				 data-color-plate="#fff"
+				 data-border-shadow-width="0"
+				 data-borders="false"
+				 data-needle-type="arrow"
+				 data-needle-width="4"
+				 data-needle-circle-size="7"
+				 data-needle-circle-outer="true"
+				 data-needle-circle-inner="false"
+				 data-animation-duration="800"
+				 data-animation-rule="linear"
+				 data-font-units-size="65"
+				 data-color-units="#000"
+				 data-color-needle="rgba(248, 129, 230, 0.91)"
+				 data-color-needle-end="rgba(199, 10, 183, 0.91)"
+			     data-color-needle="rgba(199, 10, 183, 0.91)"
+        ></canvas>
+            </span>
+            <span align="right">
+            <canvas id="SENSOR04-Temperature"
+					data-type="radial-gauge"
+				    data-width="400"
+			    	data-height="400"
+			    	data-units="20"
+			    	data-value="20"
+					data-font-numbers-size="35"
+					data-exact-ticks="true"
+			    	data-min-value="0"
+					data-start-angle="100"
+					data-ticks-angle="160"
+			    	data-value-box="false"
+			    	data-max-value="60"
+			    	data-major-ticks="0,21,60"
+			    	data-minor-ticks="2"
+			    	data-stroke-ticks="true"
+					
+			    	data-highlights='[
+			    		
+						{"from": 0, "to": 60, "color": "rgba(89, 149, 232, 1)"}
+			    	]'
+					data-color-plate="#fff"
+					data-border-shadow-width="0"
+					data-borders="false"
+					data-needle-type="arrow"
+					data-needle-width="4"
+					data-needle-circle-size="7"
+					data-needle-circle-outer="true"
+					data-needle-circle-inner="false"
+					data-animation-duration="800"
+					data-animation-rule="linear"
+					data-font-units-size="65"
+					data-color-units="#000"
+					data-color-needle="rgba(248, 129, 230, 0.91)"
+					data-color-needle-end="rgba(199, 10, 183, 0.91)"
+					data-color-needle="rgba(199, 10, 183, 0.91)"
+					 
+            ></canvas>
+  				</span>
+  		</div>
+		<div class="col-sm-6" style="background-color:#FFFF;border: 2px solid white">
+			
+			<input type="checkbox" id="outside" checked data-toggle="toggle" data-onstyle="warning" data-offstyle="info" data-on="<b>Bật cảnh báo ngoài trời</b>" data-off="<b>Tắt cảnh báo ngoài trời</b>" data-size="large" onclick="myFunction()">
+			
+			
+			<input type="checkbox" id ="indoor" checked data-toggle="toggle" data-onstyle="warning" data-offstyle="info" data-on="<b>Bật cảnh báo trong xưởng  </b>" data-off="<b>Tắt cảnh báo trong xưởng</b>" data-size="large" onclick="myFunction()">
+			
+			</div>
+		<div id="canvas5218427A" style="height: 400px; width: 100%;"></div>
+		<div id="canvas52364E1A" style="height: 400px; width: 100%;"></div>
+		<div id="canvas52364E1B" style="height: 400px; width: 100%;"></div>
+		<div id="canvas52364E1C" style="height: 400px; width: 100%;"></div>
+		
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  	</div>
+  </div>
+<!-- gauge  -->
+<!--style="display: none;"-->
+		<!-- style="display: none;"   -->
+		<!--hiden-->
+		<div data-role="content" id="content_body" class="ui-content" role="main"  >
+			<div id="logger_content"></div>
+		</div>
+		<!-- /content -->
+
+	</div>
+	<!-- **********************トップ画面********************** -->
+
+	<!-- **********************グラフ画面********************** -->
+	<div data-role="page" id="page_graph">
+
+	  <div data-role="header" data-position="inline" data-backbtn="false" id="graph_header" data-theme="b">
+            <a href="" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left btn-circle"><i class="zmdi zmdi-long-arrow-left"></i></a>
+		<h1 id="graph_title"></h1>
+		<a href="#" data-iconpos="notext" class="ui-btn ui-btn-right btn-circle" id="updateGraph"><i class="zmdi zmdi-refresh float-icon"></i></a>
+	  </div>
+		<!-- /header -->
+
+	  <!-- Progress -->
+	  <div id="updateProgress" class="loadie" style="display: block; width: 100%"></div>
+	  <!-- Progress-->
+
+	    <!--  現在値 -->
+	    <div class="ui-grid-a" id="current_panel">
+	      <div class="ui-block-a">
+	        <div class="ui-bar ui-bar-a" style="min-height: 120px">
+	          <div class="current_ch_name" id="ch1_name"></div>
+	          <div class="current_wrapper">
+	            <span class="current_value" id="ch1_value">----</span>
+	            <span class="current_unit" id="ch1_unit"></span>
+	          </div>
+	          <img id="ch1_warning" class="current_battery" src="images/warning1.gif">
+	          <p class="currnet_datetime" id="ch1_datetime"></p>
+	        </div>
+	      </div>
+	      <div class="ui-block-b">
+	        <div class="ui-bar ui-bar-a" style="min-height: 120px">
+	          <div class="current_ch_name" id="ch2_name"></div>
+	          <div class="current_wrapper">
+	            <span class="current_value" id="ch2_value">----</span>
+	            <span class="current_unit" id="ch2_unit"></span>
+	          </div>
+	          <img id="ch2_warning" class="current_battery" src="images/warning1.gif">
+	          <p class="currnet_datetime" id="ch2_datetime"></p>
+	        </div>
+	      </div>
+	    </div>
+	    <!--  現在値 -->
+
+	</div>
+	<!-- **********************グラフ画面********************** -->
+
+
+	<!-- **********************設定画面-表示設定********************** -->
+	<div data-role="page" id="page_set_display">
+        <div data-role="header" data-position="inline" data-backbtn="false" data-theme="b">
+            <a href="" data-rel="back" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left btn-circle"><i class="zmdi zmdi-long-arrow-left"></i></a>
+            <h1 data-i18n="MENU_DISPLAY_SETTINGS">表示設定</h1>
+        </div>
+
+		<!--  ここから本文  -->
+		<div data-role="content">
+		  <ul data-role="listview" data-inset="true">
+		    <li data-role="list-divider" data-i18n="MENU_DISPLAY_SETTINGS_CURRENT">現在値表示</li> 
+		    <li data-role="fieldcontain">
+		      <fieldset class="ui-grid-a">
+		        <div class="ui-block-a">
+		          <label for="update-interval" class="select" data-i18n="LABEL_UPDATE_INTERVAL">更新間隔:</label> 
+		        </div>
+		        <div class="ui-block-b">
+		          <select name="update-interval" id="update-interval"> 
+		            <option value="60" data-i18n="ITEM_1MIN">1分</option>
+		            <option value="180" data-i18n="ITEM_3MIN" selected>3分</option>
+		            <option value="300" data-i18n="ITEM_5MIN">5分</option>
+		            <option value="600" data-i18n="ITEM_10MIN">10分</option>
+		          </select>
+		        </div>
+		      </fieldset>
+		    </li>
+		    <li data-role="fieldcontain">
+		      <fieldset class="ui-grid-a">
+		        <div class="ui-block-a">
+		          <label for="graph-display-cnt" class="select" data-i18n="LABEL_GRAPH_DISPLAY">グラフ表示件数:</label> 
+		        </div>
+		        <div class="ui-block-b">
+		          <select name="graph-display-cnt" id="graph-display-cnt">
+		            <option value="50" selected>50</option>
+		            <option value="100">100</option>
+		            <option value="200">200</option>
+		            <option value="500">500</option>
+		            <option value="1000">1000</option>
+		            <option value="1500">1500</option>
+		          </select>
+		        </div>
+		      </fieldset>
+		    </li>
+		    <li data-role="fieldcontain">
+		      <fieldset class="ui-grid-a">
+		        <div class="ui-block-a">
+		          <label for="list-sort-order" class="select" data-i18n="LABEL_LIST_SORT_ORDER">リスト表示順:</label> 
+		        </div>
+		        <div class="ui-block-b">
+		          <select name="list-sort-order" id="list-sort-order">
+		            <option value="name" data-i18n="ITEM_SORTED_BY_LOGGER_NAME" selected>機器名称</option>
+		            <option value="serial" data-i18n="ITEM_SORTED_BY_LOGGER_SERIAL">シリアル番号</option>
+		          </select>
+		        </div>
+		      </fieldset>
+		    </li>
+		    <li data-role="fieldcontain" id="temp-unit-column">
+		      <fieldset class="ui-grid-a">
+		        <div class="ui-block-a">
+		          <label for="temp-unit" class="select" data-i18n="LABEL_TEMP_UNIT">温度単位:</label> 
+		        </div>
+		        <div class="ui-block-b">
+		          <select name="temp-unit" id="temp-unit">
+		            <option value="C" data-i18n="ITEM_TEMP_C" selected>摂氏(&deg;C)</option>
+		            <option value="F" data-i18n="ITEM_TEMP_F">華氏(&deg;F)</option>
+		          </select>
+		        </div>
+		      </fieldset>
+		    </li>
+            <li data-role="fieldcontain" id="summertime-column">
+              <fieldset class="ui-grid-a">
+                <div class="ui-block-a">
+                  <label for="summertime" class="select" data-i18n="LABEL_DAYLIGHT_SAVING_TIME">サマータイム表示:</label> 
+                </div>
+                <div class="ui-block-b">
+                  <select name="summertime" id="summertime">
+                    <option value="1" data-i18n="ITEM_ON">有効</option>
+                    <option value="0" data-i18n="ITEM_OFF" selected>無効</option>
+                  </select>
+                </div>
+              </fieldset>
+            </li>
+		  </ul>
+
+
+		  <button type="button" data-theme="a" id="button-display-apply" data-i18n="BUTTON_SUBMIT_FORM">設定</button>
+
+		</div>
+		<!-- /content -->
+	</div>
+	<!-- **********************設定画面-表示設定********************** -->
+
+	<!-- **********************設定画面-言語設定********************** -->
+	<div data-role="page" id="page_set_lang">
+	
+        <div data-role="header" data-position="inline" data-backbtn="false" data-theme="b">
+            <a href="#page_top" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-left btn-circle"><i class="zmdi zmdi-long-arrow-left"></i></a>
+            <h1 data-i18n="MENU_LANG_SETTINGS">言語設定</h1>
+        </div>
+		<!-- /header -->
+		<!--  ここから本文  -->
+		<div data-role="content" id="content_body_add">
+		
+			<fieldset data-role="controlgroup">
+			    <input type="radio" name="set-lang" id="lang-en" value="en">
+			    <label for="lang-en" data-i18n="LABEL_LANG_EN">English</label>
+			    <input type="radio" name="set-lang" id="lang-ja" value="ja">
+			    <label for="lang-ja" data-i18n="LABEL_LANG_JA">日本語</label>
+			</fieldset>
+				
+			<button type="button" data-theme="a" id="button-lang-apply" data-i18n="BUTTON_SUBMIT_FORM">設定</button>
+
+		</div>
+		<!-- /content -->
+	</div>
+	<!-- **********************設定画面-言語設定********************** -->
+
+</body>
+
+<script>
+ window.onload = function () {
+ var chart3 = new CanvasJS.Chart("canvas5218427A", {
+	animationEnabled: true,
+	title:{
+		text: "外気 Ngoài trời",
+		fontFamily: "tahoma"
+	},
+	toolTip: {
+		shared: false
+	},
+	axisX: {
+		title: "Time",
+		
+	},
+	axisY: {
+		title: "Nhiệt độ",
+		titleFontColor: "#4F81BC",
+		suffix : "C",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Độ ẩm",
+		titleFontColor: "#C0504E",
+		suffix : "%",
+		lineColor: "#C0504E",
+		tickColor: "#C0504E"
+	},
+	data: [{
+		type: "spline",
+		name: "Nhiệt độ",
+		xValueType: "dateTime",
+		yValueFormatString: "C",
+		dataPoints: Temp5218427A
+	},
+	{
+		type: "spline",  
+		axisYType: "secondary",
+		name: "Độ ẩm",
+		yValueFormatString: "%",
+		dataPoints: Humi5218427A
+	}]
+});
+chart3.render();
+
+ 
+ var chart2 = new CanvasJS.Chart("canvas52364E1A", {
+	animationEnabled: true,
+	title:{
+		text: "加工エリア Xưởng sản xuất",
+		fontFamily: "tahoma"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Time",
+		suffix : " "
+	},
+	axisY: {
+		title: "Nhiệt độ",
+		titleFontColor: "#4F81BC",
+		suffix : " C",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Độ ẩm",
+		titleFontColor: "#C0504E",
+		suffix : " %",
+		lineColor: "#C0504E",
+		tickColor: "#C0504E"
+	},
+	data: [{
+		type: "spline",
+		name: "Nhiệt độ",
+		xValueType: "dateTime",
+		yValueFormatString: "C",
+		dataPoints: Temp52364E1A
+	},
+	{
+		type: "spline",  
+		axisYType: "secondary",
+		name: "Độ ẩm",
+		yValueFormatString: "%",
+		dataPoints: Humi52364E1A
+	}]
+});
+chart2.render();
+
+ 
+ var chart1 = new CanvasJS.Chart("canvas52364E1B", {
+	animationEnabled: true,
+	title:{
+		text: "部品庫 Kho linh kiện",
+		fontFamily: "tahoma"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Time",
+		suffix : " "
+	},
+	axisY: {
+		title: "Nhiệt độ",
+		titleFontColor: "#4F81BC",
+		suffix : " C",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Độ ẩm",
+		titleFontColor: "#C0504E",
+		suffix : " %",
+		lineColor: "#C0504E",
+		tickColor: "#C0504E"
+	},
+	data: [{
+		type: "spline",
+		name: "Nhiệt độ",
+		xValueType: "dateTime",
+		yValueFormatString: "C",
+		dataPoints: Temp52364E1B
+	},
+	{
+		type: "spline",  
+		axisYType: "secondary",
+		name: "Độ ẩm",
+		yValueFormatString: "%",
+		dataPoints: Humi52364E1B
+	}]
+});
+chart1.render();
+
+
+var chart = new CanvasJS.Chart("canvas52364E1C", {
+	animationEnabled: true,
+	title:{
+		text: "防湿庫 Kho chống ẩm",
+		fontFamily: "tahoma"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Time",
+		suffix : " "
+	},
+	axisY: {
+		title: "Nhiệt độ",
+		titleFontColor: "#4F81BC",
+		suffix : " C",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Độ ẩm",
+		titleFontColor: "#C0504E",
+		suffix : " %",
+		lineColor: "#C0504E",
+		tickColor: "#C0504E"
+	},
+	data: [{
+		type: "spline",
+		name: "Nhiệt độ",
+		xValueType: "dateTime",
+		yValueFormatString: "C",
+		dataPoints: Temp52364E1C
+	},
+	{
+		type: "spline",  
+		axisYType: "secondary",
+		name: "Độ ẩm",
+		yValueFormatString: "%",
+		dataPoints: Humi52364E1C
+	}]
+});
+chart.render();
+
+}
+</script>
+
+
+</html>

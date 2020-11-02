@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title data-i18n="TITLE_DELETE_DEVICE">機器の削除</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="cache-control" content="no-cache">
+<link rel="apple-touch-icon-precomposed" href="../images/favicon_admin.png"/>
+<link rel="icon" href="../images/favicon_admin.png" type="image/png"/>
+<link href="../images/favicon_admin.ico" rel="shortcut icon" />
+<link href="../images/favicon_admin.ico" rel="icon" />
+<link rel="stylesheet" href="../lib/jqmobile/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" href="../lib/nativedroid2/css/nativedroid2.css" />
+<link rel="stylesheet" href="../lib/nativedroid2/css/nativedroid2.color.grey.css" />
+<link rel="stylesheet" href="../lib/waves/waves.min.css" />
+<link rel="stylesheet" href="../lib/wow/animate.css" />
+<link rel="stylesheet" href="../lib/swiper/css/swiper.min.css" />
+
+<link rel="stylesheet" href="../css/dataserver.min.css?v=1564034570474">
+
+<script type="text/javascript" src="../lib/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../lib/jqmobile/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.i18n.properties-min-1.0.9.js"></script>
+<script type="text/javascript" src="../lib/waves/waves.min.js"></script>
+<script type="text/javascript" src="../lib/wow/wow.min.js"></script>
+<script type="text/javascript" src="../lib/nativedroid2/nativedroid2.js"></script>
+<script type="text/javascript" src="../lib/jquery.i18n.properties-min-1.0.9.js"></script>
+<script type="text/javascript" src="../lib/swiper/swiper.jquery.min.js"></script>
+<script src="../js/dataserver.min.js?v=1564034570474"></script>
+</head>
+
+<script>
+
+$(function(){
+	/*
+    var swiper = new Swiper ('.swiper-container', {
+        slidesPerView: 3,
+        //freeMode: true,
+        spaceBetween: 10,
+        centeredSlides: true,
+        //slidesOffsetBefore: 25,
+        //slidesOffsetAfter: 25,
+        initialSlide: 2,
+        breakpoints: {
+          320: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          480: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          }
+        }
+        //freeModeSticky: true
+        //loop: true
+    });
+    */
+    
+
+});
+
+
+</script>
+<body>
+	
+	<!-- JavaScript無効時表示用メッセージ -->
+	<div id="javascript_error_message" style="z-index: 9999; position: absolute; top: 0px; left: 0px; background-color: #cfdfff; -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);">
+		<div style="margin-left: 20px;">
+			<p>
+				本アプリケーションを利用するには、JavaScriptを有効にする必要があります。<br>
+				このブラウザでは、JavaScriptが無効になっているか、サポートされていないようです。<br>
+				JavaScriptを有効にし、<a href="">もう一度お試しください。</a>
+			</p>
+		</div>
+		<div style="margin-left: 20px;">
+			<p>
+				<font face=arial>JavaScript must be enabled in order for you to use this application. However, it seems JavaScript is either disabled or not supported by your browser. Enable JavaScript by changing your browser options, then <a href="">try again</a>. </font>
+			</p>
+		</div>
+	</div>
+	
+
+	<!-- JavaScript無効時表示用メッセージ -->
+
+	<!-- **********************トップ画面********************** -->
+	<div data-role="page" id="page_admin_top">
+
+		<div data-role="header" data-position="inline" data-backbtn="false" class="wow fadeInDown" data-wow-delay="0.2s">
+
+			<h1 data-i18n="TITLE_DELETE_DEVICE" id="app-title" class="wow fadeIn" data-wow-delay='0.4s'>機器の削除</h1>
+
+			<!--  親機スワイプエリア -->
+			<div class="swiper-container">
+				<div class="swiper-wrapper" id="category"></div>
+			</div>
+
+		</div>
+		<!-- /header -->
+
+
+
+		<!-- content -->
+		<div data-role="content" id="content_body" class="ui-content" role="main">
+			<div id="logger_content"></div>
+		</div>
+		<!-- /content -->
+
+		<!-- Delete Dialog -->
+		<div data-role="popup" id="deleteDialog">
+			<div data-role="header">
+				<h1 class='nd-title' id='delete_dialog_title'></h1>
+			</div>
+		
+			<div data-role="content">
+					<p data-i18n="MSG_DELETE_DEVICE_CONFIRMATION"></p><br>
+					<a href="#" id="dialog_delete_button" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary clr-warning"><i class='zmdi'></i><span data-i18n="BUTTON_DELETE">削除</span></a>
+					<a href="#" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary clr-primary"><i class='zmdi'></i><span data-i18n="BUTTON_CANCEL">キャンセル</span></a>
+			</div>
+		</div>
+		<!-- Delete Dialog -->
+
+		<!-- Error Dialog -->
+		<div data-role="popup" id="errorDialog">
+				<div data-role="header">
+					<h1 class='nd-title' id='error_dialog_title' data-i18n="TITLE_ERROR_DIALOG">エラー</h1>
+				</div>
+			
+				<div data-role="content">
+						<p id="error_message"></p>
+						<p id="error_message_optional" class="error_message_optional"></p>
+						<a href="#" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary clr-primary"><i class='zmdi'></i><span data-i18n="BUTTON_OK">OK</span></a>
+				</div>
+			</div>
+			<!-- Error Dialog -->
+
+	</div>
+	<!-- **********************トップ画面********************** -->
+	
+
+
+</body>
+</html>

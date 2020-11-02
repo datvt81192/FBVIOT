@@ -1,0 +1,9 @@
+Version Info
+
+N:Aplication Name
+T:System Version
+
+#N# T&D Data Server
+#T# 2.12
+
+
